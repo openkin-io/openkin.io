@@ -6,7 +6,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
-from . import world
+from app.models.kinship import Filiation, Sibling
+from app.models import world
 
 
 class AbstractPerson(models.Model):
@@ -16,10 +17,12 @@ class AbstractPerson(models.Model):
     #
     # Names
     #
+    name = models.CharField(_("name"), max_length=750)
     surname = models.CharField(
         _("surname"),
         help_text=_("Also called last name, second name or family name."),
         max_length=750,  # https://www.guinnessworldrecords.com/world-records/67285-longest-personal-name
+        blank=True,
     )
     firstname = models.CharField(_("first name"), max_length=100, blank=True)
     birth_name = models.CharField(_("birth name"), max_length=750, blank=True)
@@ -102,31 +105,55 @@ class AbstractPerson(models.Model):
     occupation = models.TextField(_("occupation"), blank=True)
     notes = models.TextField(_("notes"), blank=True)
 
+    def __str__(self) -> str:
+        return self.get_full_name()
+
+    def get_full_name(self) -> str:
+        if self.surname and self.firstname:
+            return f"{self.firstname} {self.surname}"
+        return str(self.name)
+
 
 class Person(AbstractPerson):
+    """The base person model.
+    Inherits all metatdata and biographical information fields from AbstractPerson.
+    Defines `genetic_mother` and `genetic_father` foreign keys to other Person models.
+    All other kinship relations can be derived from these.
+
+    Attributes:
+        mother: The person's mother (another Person) (optional)
+        father: The person's father (another Person) (optional)
+    """
+
     class Meta(AbstractPerson.Meta):
         verbose_name = _("person")
         verbose_name_plural = _("persons")
 
-    mother = models.ForeignKey(
-        "self", on_delete=models.SET_NULL, null=True, related_name="children"
+    genetic_mother = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        related_name="children",
+        null=True,
     )
-    father = models.ForeignKey(
-        "self", on_delete=models.SET_NULL, null=True, related_name="children"
+    genetic_father = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        related_name="children",
+        null=True,
     )
+
+    parents = models.ManyToManyField("self", through=Filiation)
+    siblings = models.ManyToManyField("self", through=Sibling)
 
     @override
     def clean(self) -> None:
-        if self.mother == self.father:
+        if self.genetic_mother == self.genetic_father:
             raise ValidationError(
                 _("Mother and father cannot be the same person")
             )
-        if self.mother == self or self.father == self:
+        if self.genetic_mother == self or self.genetic_father == self:
             raise ValidationError(
                 _("A person cannot be their own mother or father")
             )
-        return super().clean()
 
-    @property
-    def siblings(self):
-        return Person.objects.filter(mother=self.mother, father=self.father)
+        return super().clean()
