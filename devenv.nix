@@ -8,7 +8,6 @@
     pkgs.gettext
     pkgs.just
     pkgs.marksman
-    pkgs.pyright
     pkgs.ruff
     pkgs.ruff-lsp
     pkgs.tailwindcss
