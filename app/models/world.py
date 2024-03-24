@@ -3,15 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Location(models.Model):
-    """An abstract class for all geographical locations
-
-    Attributes:
-        name: The name of the location, in English
-        native_name: The name of the location in the native language (optional)
-        wiki: The Wikipedia URL of the locationn (optional)
-        latitude: The latitude of the location (optional)
-        longitude: The longitude of the location (optional)
-    """
+    """An abstract class for all geographical locations"""
 
     class Meta:
         abstract = True
@@ -26,22 +18,32 @@ class Location(models.Model):
     )
     native_name = models.TextField(
         _("native_name"),
-        help_text=_("The location name in the native language, untranslated"),
+        help_text=_(
+            "The location name in the native language, if different from the name."
+        ),
         blank=True,
     )
 
     wiki = models.URLField(_("Wikipedia URL"), blank=True)
 
-    latitude = models.DecimalField(_("latitude"), blank=True, null=True)
-    longitude = models.DecimalField(_("longitude"), blank=True, null=True)
+    latitude = models.DecimalField(
+        _("latitude"),
+        max_digits=7,
+        decimal_places=4,
+        null=True,
+        blank=True,
+    )
+    longitude = models.DecimalField(
+        _("longitude"),
+        max_digits=7,
+        decimal_places=4,
+        null=True,
+        blank=True,
+    )
 
 
 class Country(Location):
-    """A Distinct part of the world, such as a state, nation or other political entity.
-
-    Attributes:
-        image_flag: A URL to a flag image (optional)
-    """
+    """A Distinct part of the world, such as a state, nation or other political entity."""
 
     class Meta(Location.Meta):
         verbose_name = _("Country")
@@ -51,12 +53,7 @@ class Country(Location):
 
 
 class Region(Location):
-    """The principal administrative division of a country
-
-    Attributes:
-        region_type: The region type (state, province, oblast, etc.)
-        country: The region's country
-    """
+    """The principal administrative division of a country"""
 
     class Meta(Location.Meta):
         verbose_name = _("Region")
@@ -97,14 +94,7 @@ class SubRegion(Location):
 
 
 class Settlement(Location):
-    """A municipality, village, city, etc. in a country
-
-    Attributes:
-        country: A reference to the settlement's country (required)
-        region: The region the settlement is in (optional)
-        subregion: The subregion the settlement is in (optional)
-        settlement_type: The type of settlement
-    """
+    """A municipality, village, city, etc. in a country"""
 
     class Meta(Location.Meta):
         verbose_name = _("Municipality")
@@ -121,22 +111,16 @@ class Settlement(Location):
     )
 
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=True)
+    region = models.ForeignKey(
+        Region, on_delete=models.CASCADE, null=True, blank=True
+    )
     subregion = models.ForeignKey(
-        SubRegion, on_delete=models.CASCADE, null=True
+        SubRegion, on_delete=models.CASCADE, null=True, blank=True
     )
 
 
 class Place(Location):
-    """Any physical location with a name that is not country-specific.
-
-    Attributes:
-        place_type: The type of place
-        country: A reference to the place's country (optional)
-        region: The region the place is in (optional)
-        subregion: The subregion the place is in (optional)
-        settlement: The settlement the place is in (optional)
-    """
+    """Any physical location with a name that is not country-specific."""
 
     class Meta(Location.Meta):
         verbose_name = _("Place")
@@ -144,9 +128,10 @@ class Place(Location):
 
     place_type = models.CharField(
         _("place type"),
-        max_length=32,
+        max_length=70,
         help_text=_(
-            "Can be a natural place like a forest, a body of water, a mountain, etc.; or a man-made place like a landmark, a monument, a historic site, a building, etc."
+            "Can be a natural place like a forest, a body of water, a mountain, etc.;"
+            "or a man-made place like a landmark, a monument, a historic site, a building, etc."
         ),
         blank=True,
     )
