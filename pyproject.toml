@@ -2,6 +2,15 @@
 line-length = 80
 ignore = ["F405"]
 
+[tool.basedpyright]
+include = ["."]
+exclude = ["**/__pycache__", ".*/"]
+defineConstant = { DEBUG = true }
+typeCheckingMode = "basic"
+
+reportMissingImports = true
+reportMissingTypeStubs = true
+
 [tool.djlint]
 blank_line_after_tag = "load,extends,endblock,endpartialdef"
 blank_line_before_tag = "block,partialdef"
