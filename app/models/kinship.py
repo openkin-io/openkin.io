@@ -1,18 +1,10 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from typing_extensions import override
 
 
 class Filiation(models.Model):
-    """Filial relation between parent and child. Does not imply genetic relation.
-
-    Attributes:
-        parent (ForeignKey to Person)
-        child (ForeignKey to Person)
-        is_adoption (BooleanField): optional
-        date_of_adoption (DateField): optional
-    """
+    """Filial relation between parent and child. Does not imply genetic relation."""
 
     child = models.ForeignKey("Person", on_delete=models.CASCADE)
     parent = models.ForeignKey(
@@ -29,7 +21,6 @@ class Filiation(models.Model):
             )
         ]
 
-    @override
     def clean(self):
         if self.parent == self.child:
             raise ValidationError(
@@ -44,51 +35,38 @@ class Filiation(models.Model):
 
 
 class Siblingship(models.Model):
-    """Sibling relation between two persons. Does not imply genetic relation.
+    """Sibling relation between two persons. Does not imply genetic relation."""
 
-    Attributes:
-        sibling_a (ForeignKey to Person)
-        sibling_b (ForeignKey to Person)
-        sibling_since (DateField): optional
-    """
-
-    sibling_a = models.ForeignKey(
-        "Person", related_name="sibling", on_delete=models.CASCADE
+    person = models.ForeignKey("Person", on_delete=models.CASCADE)
+    sibling = models.ForeignKey(
+        "Person", related_name="siblingships", on_delete=models.CASCADE
     )
-    sibling_b = models.ForeignKey(
-        "Person", related_name="sibling", on_delete=models.CASCADE
-    )
-    sibling_since = models.DateField(null=True)
+    became_siblings_at = models.DateField(null=True, blank=True)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["sibling_a", "sibling_b"],
-                name="sibling_a_sibling_b_unique",
-            ),
+                fields=["person", "sibling"], name="unique_siblingship"
+            )
         ]
+        ordering = ["person", "sibling"]
 
-    @override
     def clean(self):
-        if self.sibling_a == self.sibling_b:
-            raise ValidationError("A person cannot be their own sibling.")
+        if self.person == self.sibling:
+            raise ValidationError("Siblings cannot be the same person.")
+
+    def save(self, *args, **kwargs):
+        if self.person.id > self.sibling.id:
+            self.person, self.sibling = self.sibling, self.person
+        super().save(*args, **kwargs)
 
 
 class Partnership(models.Model):
-    """Some form of long-term partnership between two persons.
+    """Some form of long-term partnership between two persons."""
 
-    Attributes:
-        partner_a (ForeignKey to Person)
-        partner_b (ForeignKey to Person)
-        date_of_union (DateField): optional
-        partnership_type (CharField): optional
-    """
-
-    partner_a = models.ForeignKey(
-        "Person", related_name="partner", on_delete=models.CASCADE
-    )
-    partner_b = models.ForeignKey(
-        "Person", related_name="partner", on_delete=models.CASCADE
+    person = models.ForeignKey("Person", on_delete=models.CASCADE)
+    partner = models.ForeignKey(
+        "Person", related_name="partnerships", on_delete=models.CASCADE
     )
     date_of_union = models.DateField(null=True)
     partnership_type = models.CharField(
@@ -97,3 +75,20 @@ class Partnership(models.Model):
         max_length=255,
         blank=True,
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["person", "partner"], name="unique_partnership"
+            )
+        ]
+        ordering = ["person", "partner"]
+
+    def clean(self):
+        if self.person == self.partner:
+            raise ValidationError("Partners cannot be the same person.")
+
+    def save(self, *args, **kwargs):
+        if self.person.id > self.partner.id:
+            self.person, self.partner = self.partner, self.person
+        super().save(*args, **kwargs)
