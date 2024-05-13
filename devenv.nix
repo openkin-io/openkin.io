@@ -34,7 +34,10 @@
     ];
     hooks = {
       nixpkgs-fmt.enable = true;
-      ruff.enable = true;
+      ruff = {
+        enable = true;
+        entry = "${pkgs.ruff}/bin/ruff check";
+      };
       djlint = {
         enable = true;
         name = "djlint-reformat-django";
