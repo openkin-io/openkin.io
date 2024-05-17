@@ -50,7 +50,7 @@ class AbstractPerson(models.Model):
     native_name_lang = models.CharField(
         _("language of native name"),
         choices=settings.LANGUAGES,
-        max_length=5,
+        max_length=7,
         blank=True,
     )
     pronunciation = models.CharField(
@@ -105,6 +105,7 @@ class AbstractPerson(models.Model):
         },
         on_delete=models.SET_NULL,
         null=True,
+        related_name='natives',
     )
     birth_place_object_id = models.PositiveIntegerField()
     birth_place = GenericForeignKey(
@@ -124,10 +125,11 @@ class AbstractPerson(models.Model):
         },
         on_delete=models.SET_NULL,
         null=True,
+        related_name='gone_missing',
     )
     disappearance_place_object_id = models.PositiveIntegerField()
     disappearance_place = GenericForeignKey(
-        "appearance_place_content_type", "disappearance_place_object_id"
+        "disappearance_place_content_type", "disappearance_place_object_id"
     )
 
     death_date = models.DateField(_("date of death"), null=True, blank=True)
@@ -138,6 +140,7 @@ class AbstractPerson(models.Model):
         },
         on_delete=models.SET_NULL,
         null=True,
+        related_name='deceased'
     )
     death_place_object_id = models.PositiveIntegerField()
     death_place = GenericForeignKey(
@@ -223,14 +226,14 @@ class Person(AbstractPerson):
     genetic_mother = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        related_name="genetic_children",
+        related_name='+',
         null=True,
         blank=True,
     )
     genetic_father = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        related_name="genetic_children",
+        related_name='+',
         null=True,
         blank=True,
     )
