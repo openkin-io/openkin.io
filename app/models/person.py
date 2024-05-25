@@ -3,6 +3,7 @@ from typing_extensions import override
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models import Q, F
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
@@ -90,9 +91,7 @@ class AbstractPerson(models.Model):
     #
     # Media
     #
-    image = models.URLField(
-        _("image url"), help_text=_("A person's image"), blank=True
-    )
+    image = models.URLField(_("image url"), help_text=_("A person's image"), blank=True)
 
     #
     # Dates & Places
@@ -100,16 +99,15 @@ class AbstractPerson(models.Model):
     birth_date = models.DateField(_("date of birth"), null=True, blank=True)
     birth_place_content_type = models.ForeignKey(
         ContentType,
-        limit_choices_to={
-            "model__in": [Country, Region, SubRegion, Settlement, Place]
-        },
+        limit_choices_to={"model__in": [Country, Region, SubRegion, Settlement, Place]},
         on_delete=models.SET_NULL,
         null=True,
-        related_name='natives',
+        related_name="natives",
     )
-    birth_place_object_id = models.PositiveIntegerField()
+    birth_place_object_id = models.PositiveIntegerField(null=True)
     birth_place = GenericForeignKey(
-        "birth_place_content_type", "birth_place_object_id"
+        "birth_place_content_type",
+        "birth_place_object_id",
     )
 
     disappearance_date = models.DateField(
@@ -120,14 +118,12 @@ class AbstractPerson(models.Model):
     )
     disappearance_place_content_type = models.ForeignKey(
         ContentType,
-        limit_choices_to={
-            "model__in": [Country, Region, SubRegion, Settlement, Place]
-        },
+        limit_choices_to={"model__in": [Country, Region, SubRegion, Settlement, Place]},
         on_delete=models.SET_NULL,
         null=True,
-        related_name='gone_missing',
+        related_name="gone_missing",
     )
-    disappearance_place_object_id = models.PositiveIntegerField()
+    disappearance_place_object_id = models.PositiveIntegerField(null=True)
     disappearance_place = GenericForeignKey(
         "disappearance_place_content_type", "disappearance_place_object_id"
     )
@@ -135,29 +131,23 @@ class AbstractPerson(models.Model):
     death_date = models.DateField(_("date of death"), null=True, blank=True)
     death_place_content_type = models.ForeignKey(
         ContentType,
-        limit_choices_to={
-            "model__in": [Country, Region, SubRegion, Settlement, Place]
-        },
+        limit_choices_to={"model__in": [Country, Region, SubRegion, Settlement, Place]},
         on_delete=models.SET_NULL,
         null=True,
-        related_name='deceased'
+        related_name="deceased",
     )
-    death_place_object_id = models.PositiveIntegerField()
-    death_place = GenericForeignKey(
-        "death_place_content_type", "death_place_object_id"
-    )
+    death_place_object_id = models.PositiveIntegerField(null=True)
+    death_place = GenericForeignKey("death_place_content_type", "death_place_object_id")
 
     death_cause = models.TextField(_("cause of death"), blank=True)
 
     resting_place_content_type = models.ForeignKey(
         ContentType,
-        limit_choices_to={
-            "model__in": [Country, Region, SubRegion, Settlement, Place]
-        },
+        limit_choices_to={"model__in": [Country, Region, SubRegion, Settlement, Place]},
         on_delete=models.SET_NULL,
         null=True,
     )
-    resting_place_object_id = models.PositiveIntegerField()
+    resting_place_object_id = models.PositiveIntegerField(null=True)
     resting_place = GenericForeignKey(
         "resting_place_content_type", "resting_place_object_id"
     )
@@ -220,31 +210,39 @@ class Person(AbstractPerson):
         verbose_name = _("person")
         verbose_name_plural = _("persons")
 
+        constraints = [
+            models.CheckConstraint(
+                name="genetic_parents_cannot_be_the_same_person",
+                check=Q(genetic_mother=F("genetic_father"))
+                | Q(genetic_father=F("genetic_mother")),
+            )
+        ]
+
     #
     # First-degree genetic relations
     #
     genetic_mother = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        related_name='+',
+        related_name="+",
         null=True,
         blank=True,
     )
     genetic_father = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        related_name='+',
+        related_name="+",
         null=True,
         blank=True,
     )
 
     @property
     def genetic_siblings(self):
-        """Returns the set of people who share the same genetic parents as this person."""
+        """Returns the set of people who share genetic parents with this person."""
         return Person.objects.filter(
-            genetic_mother=self.genetic_mother,
-            genetic_father=self.genetic_father,
-        )
+            (~Q(genetic_mother=None) & Q(genetic_mother=self.genetic_mother))
+            | (~Q(genetic_father=None) & Q(genetic_father=self.genetic_father))
+        ).exclude(pk=self.pk)
 
     #
     # First-degree Kinship relations
@@ -257,13 +255,18 @@ class Person(AbstractPerson):
     def clean(self) -> None:
         if self.genetic_mother == self.genetic_father:
             raise ValidationError(
-                _(
-                    "Genetic mothers and genetic fathers cannot be the same person."
-                )
+                _("Genetic mothers and genetic fathers cannot be the same person.")
             )
         if self.genetic_mother == self or self.genetic_father == self:
             raise ValidationError(
                 _("A person cannot be their own genetic mother or father.")
             )
+
+        if self.genetic_mother and not self.parents.contains(self.genetic_mother):
+            self.parents.add(self.genetic_mother)
+        if self.genetic_father and not self.parents.contains(self.genetic_father):
+            self.parents.add(self.genetic_father)
+
+        # TODO: If parents have been set or changed, make sure to update siblingships
 
         return super().clean()
