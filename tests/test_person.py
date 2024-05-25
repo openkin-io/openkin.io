@@ -1,0 +1,2 @@
+class PersonTestCase(TestCase):
+    pass
