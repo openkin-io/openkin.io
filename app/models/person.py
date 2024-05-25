@@ -34,9 +34,7 @@ class AbstractPerson(models.Model):
     )
     birth_name = models.CharField(
         _("birth name"),
-        help_text=_(
-            "Name at birth, also known as maiden name; only use if different from name"
-        ),
+        help_text=_("Name at birth, also known as maiden name; only use if different from name"),
         max_length=750,
         blank=True,
     )
@@ -80,9 +78,7 @@ class AbstractPerson(models.Model):
     )
     honorific_suffix = models.CharField(
         _("honorific suffix"),
-        help_text=_(
-            "Similar to honorific prefix, this is for honorifics of serious significance."
-        ),
+        help_text=_("Similar to honorific prefix, this is for honorifics of serious significance."),
         max_length=100,
         blank=True,
     )
@@ -90,9 +86,7 @@ class AbstractPerson(models.Model):
     #
     # Media
     #
-    image = models.URLField(
-        _("image url"), help_text=_("A person's image"), blank=True
-    )
+    image = models.URLField(_("image url"), help_text=_("A person's image"), blank=True)
 
     #
     # Dates & Places
@@ -100,16 +94,15 @@ class AbstractPerson(models.Model):
     birth_date = models.DateField(_("date of birth"), null=True, blank=True)
     birth_place_content_type = models.ForeignKey(
         ContentType,
-        limit_choices_to={
-            "model__in": [Country, Region, SubRegion, Settlement, Place]
-        },
+        limit_choices_to={"model__in": [Country, Region, SubRegion, Settlement, Place]},
         on_delete=models.SET_NULL,
         null=True,
-        related_name='natives',
+        related_name="natives",
     )
-    birth_place_object_id = models.PositiveIntegerField()
+    birth_place_object_id = models.PositiveIntegerField(null=True)
     birth_place = GenericForeignKey(
-        "birth_place_content_type", "birth_place_object_id"
+        "birth_place_content_type",
+        "birth_place_object_id",
     )
 
     disappearance_date = models.DateField(
@@ -120,47 +113,35 @@ class AbstractPerson(models.Model):
     )
     disappearance_place_content_type = models.ForeignKey(
         ContentType,
-        limit_choices_to={
-            "model__in": [Country, Region, SubRegion, Settlement, Place]
-        },
+        limit_choices_to={"model__in": [Country, Region, SubRegion, Settlement, Place]},
         on_delete=models.SET_NULL,
         null=True,
-        related_name='gone_missing',
+        related_name="gone_missing",
     )
-    disappearance_place_object_id = models.PositiveIntegerField()
-    disappearance_place = GenericForeignKey(
-        "disappearance_place_content_type", "disappearance_place_object_id"
-    )
+    disappearance_place_object_id = models.PositiveIntegerField(null=True)
+    disappearance_place = GenericForeignKey("disappearance_place_content_type", "disappearance_place_object_id")
 
     death_date = models.DateField(_("date of death"), null=True, blank=True)
     death_place_content_type = models.ForeignKey(
         ContentType,
-        limit_choices_to={
-            "model__in": [Country, Region, SubRegion, Settlement, Place]
-        },
+        limit_choices_to={"model__in": [Country, Region, SubRegion, Settlement, Place]},
         on_delete=models.SET_NULL,
         null=True,
-        related_name='deceased'
+        related_name="deceased",
     )
-    death_place_object_id = models.PositiveIntegerField()
-    death_place = GenericForeignKey(
-        "death_place_content_type", "death_place_object_id"
-    )
+    death_place_object_id = models.PositiveIntegerField(null=True)
+    death_place = GenericForeignKey("death_place_content_type", "death_place_object_id")
 
     death_cause = models.TextField(_("cause of death"), blank=True)
 
     resting_place_content_type = models.ForeignKey(
         ContentType,
-        limit_choices_to={
-            "model__in": [Country, Region, SubRegion, Settlement, Place]
-        },
+        limit_choices_to={"model__in": [Country, Region, SubRegion, Settlement, Place]},
         on_delete=models.SET_NULL,
         null=True,
     )
-    resting_place_object_id = models.PositiveIntegerField()
-    resting_place = GenericForeignKey(
-        "resting_place_content_type", "resting_place_object_id"
-    )
+    resting_place_object_id = models.PositiveIntegerField(null=True)
+    resting_place = GenericForeignKey("resting_place_content_type", "resting_place_object_id")
 
     #
     # Extra Biographical Information
@@ -181,9 +162,7 @@ class AbstractPerson(models.Model):
     )
     nationality = models.CharField(
         _("nationality"),
-        help_text=_(
-            "Synonymous with citizenship. Do not put religion or ethnicity in this field."
-        ),
+        help_text=_("Synonymous with citizenship. Do not put religion or ethnicity in this field."),
         max_length=100,
         blank=True,
     )
@@ -226,14 +205,14 @@ class Person(AbstractPerson):
     genetic_mother = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        related_name='+',
+        related_name="+",
         null=True,
         blank=True,
     )
     genetic_father = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        related_name='+',
+        related_name="+",
         null=True,
         blank=True,
     )
@@ -256,14 +235,8 @@ class Person(AbstractPerson):
     @override
     def clean(self) -> None:
         if self.genetic_mother == self.genetic_father:
-            raise ValidationError(
-                _(
-                    "Genetic mothers and genetic fathers cannot be the same person."
-                )
-            )
+            raise ValidationError(_("Genetic mothers and genetic fathers cannot be the same person."))
         if self.genetic_mother == self or self.genetic_father == self:
-            raise ValidationError(
-                _("A person cannot be their own genetic mother or father.")
-            )
+            raise ValidationError(_("A person cannot be their own genetic mother or father."))
 
         return super().clean()
