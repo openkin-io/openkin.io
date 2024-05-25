@@ -1,0 +1,20 @@
+.navbar {
+    background-color: #ffffff;
+}
+
+.navbar a {
+    color: #050505;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+}
+
+.footer {
+    background-color: #EDDBDB;
+}
+
+* {
+    background-color: #CFE2E8;
+}

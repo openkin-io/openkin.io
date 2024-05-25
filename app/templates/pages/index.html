@@ -1,7 +1,15 @@
 {% extends "_base.html" %}
 
+{% block title %}
+    Home
+{% endblock %}
+
 {% block body %}
-    <h1>
-        Hello, world!
-    </h1>
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+    <main>
+        THIS IS MAIN
+    </main>
+    {% include 'footer.html' %}
 {% endblock body %}
