@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Q, F
 from django.utils.translation import gettext_lazy as _
 
 
@@ -18,15 +19,14 @@ class Filiation(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["parent", "child"], name="parent_child_unique"
-            )
+            ),
+            models.CheckConstraint(
+                check=~Q(parent=F("child")),
+                name="parent_and_child_cannot_be_the_same_person",
+            ),
         ]
 
     def clean(self):
-        if self.parent == self.child:
-            raise ValidationError(
-                "A person cannot be their own parent or child."
-            )
-
         # Ensure is_adoption if date_of_adoption is set
         if self.date_of_adoption is not None and not self.is_adoption:
             self.is_adoption = True
@@ -47,13 +47,13 @@ class Siblingship(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["person", "sibling"], name="unique_siblingship"
-            )
+            ),
+            models.CheckConstraint(
+                check=~Q(person=F("sibling")),
+                name="siblings_cannot_be_the_same_person",
+            ),
         ]
         ordering = ["person", "sibling"]
-
-    def clean(self):
-        if self.person == self.sibling:
-            raise ValidationError("Siblings cannot be the same person.")
 
     def save(self, *args, **kwargs):
         if self.person.id > self.sibling.id:
@@ -80,7 +80,10 @@ class Partnership(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["person", "partner"], name="unique_partnership"
-            )
+            ),
+            models.CheckConstraint(
+                check=~Q(person=F("partner")), name="partners_cannot_be_the_same_person"
+            ),
         ]
         ordering = ["person", "partner"]
 
