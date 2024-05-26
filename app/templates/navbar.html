@@ -1,24 +1,25 @@
-<style>
-    .navbar {
-        display: flex;
-        flex-direction: column;
-        background-color: #099090;
-        padding: 10px;
-    }
-</style>
+{% load static %}
+
 <nav class="navbar">
-    <div class="container">
-        <a class="navbar-brand" href="#">Home</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            </ul>
-            <form method="get" action="search/" class="col-12 col-lg-3 mb-lg-0">
-                <input type="text"
-                       name="q"
-                       class="form-control rounded-pill"
-                       placeholder="Search..."
-                       id="id_q">
-            </form>
-        </div>
-    </div>
+    <ul class="navbar-list">
+        <img class="logo"
+             src="{% static 'images/openkin-logo.png' alt="OpenKin logo" %}">
+        <li>
+            <a href="index.html">Home</a>
+        </li>
+        <li>
+            <a href="about.html">About</a>
+        </li>
+        <li>
+            <a href="contact.html">Contact</a>
+        </li>
+        <li>
+            <a href="familytree.html">Your Family Tree</a>
+        </li>
+        <li class="spacer">
+        </li>
+        <li>
+            <a href="login.html">Login</a>
+        </li>
+    </ul>
 </nav>
