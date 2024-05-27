@@ -17,7 +17,7 @@
 }
 
 .navbar-list a {
-    color: white;
+    color: #522929;
     text-decoration: none;
     padding: 10px 15px;
 }
@@ -39,7 +39,7 @@
 }
 
 .footer-list a {
-    color: white;
+    color: #0e426a;
     text-decoration: none;
 }
 
@@ -57,7 +57,15 @@
     margin-right: 20px;
 }
 
-.main {
+.box {
     display: flex;
     justify-content: center;
+    padding: 100px
+}
+
+.list {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 100px;
 }
