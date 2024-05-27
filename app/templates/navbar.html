@@ -5,16 +5,16 @@
         <img class="logo"
              src="{% static 'images/openkin-logo.png' alt="OpenKin logo" %}">
         <li>
-            <a href="index.html">Home</a>
+            <a href="{% url 'home' %}">Home</a>
         </li>
         <li>
-            <a href="about.html">About</a>
+            <a href={% url 'about' %}>About</a>
         </li>
         <li>
-            <a href="contact.html">Contact</a>
+            <a href={% url 'contact' %}>Contact</a>
         </li>
         <li>
-            <a href="familytree.html">Your Family Tree</a>
+            <a href={% url 'familytree' %}>Your Family Tree</a>
         </li>
         <li class="spacer">
         </li>
