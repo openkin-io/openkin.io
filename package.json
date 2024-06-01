@@ -1,5 +1,6 @@
 {
   "devDependencies": {
-    "@efficientcss/stylelint-config-ecss": "1.0.0-beta-10"
+    "@efficientcss/stylelint-config-ecss": "1.0.0-beta-10",
+    "stylelint": "^16.6.1"
   }
 }
