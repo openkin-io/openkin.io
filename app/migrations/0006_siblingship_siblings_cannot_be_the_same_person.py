@@ -4,14 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0005_alter_siblingship_options_and_more'),
+        ("app", "0005_alter_siblingship_options_and_more"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='siblingship',
-            constraint=models.CheckConstraint(check=models.Q(('from_person', models.F('to_person')), _negated=True), name='siblings_cannot_be_the_same_person'),
+            model_name="siblingship",
+            constraint=models.CheckConstraint(
+                check=models.Q(("from_person", models.F("to_person")), _negated=True),
+                name="siblings_cannot_be_the_same_person",
+            ),
         ),
     ]
