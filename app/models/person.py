@@ -198,7 +198,7 @@ class AbstractPerson(models.Model):
 
 class Person(AbstractPerson):
     """The base person model
-    Inherits all metadata and biographical information fields from AbstractPerson.
+    Inherits all metatdata and biographical information fields from AbstractPerson.
     This class includes two categories of first-degree relational fields to other Person instances:
         - Genetic relations
         - Kinship relations (may or may not coincide with genetic relations)
@@ -213,7 +213,8 @@ class Person(AbstractPerson):
         constraints = [
             models.CheckConstraint(
                 name="genetic_parents_cannot_be_the_same_person",
-                check=~Q(genetic_mother=F("genetic_father")),
+                check=Q(genetic_mother=F("genetic_father"))
+                | Q(genetic_father=F("genetic_mother")),
             )
         ]
 
@@ -225,25 +226,23 @@ class Person(AbstractPerson):
         on_delete=models.SET_NULL,
         related_name="+",
         null=True,
+        blank=True,
     )
     genetic_father = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
         related_name="+",
         null=True,
+        blank=True,
     )
 
     @property
     def genetic_siblings(self):
         """Returns the set of people who share genetic parents with this person."""
         return Person.objects.filter(
-            (Q(genetic_mother__isnull=False) & Q(genetic_mother=self.genetic_mother))
-            | (Q(genetic_father__isnull=False) & Q(genetic_father=self.genetic_father))
+            (~Q(genetic_mother=None) & Q(genetic_mother=self.genetic_mother))
+            | (~Q(genetic_father=None) & Q(genetic_father=self.genetic_father))
         ).exclude(pk=self.pk)
-
-    @property
-    def extended_siblings(self):
-        return self.genetic_siblings.union(self.siblings.all())
 
     #
     # First-degree Kinship relations

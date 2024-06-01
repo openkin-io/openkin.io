@@ -46,7 +46,7 @@ class SiblingTestCase(TestCase):
 
         self.assertEqual(a.siblings.count(), 0)
 
-    def test_common_genetic_mother(self):
+    def test_share_genetic_mother(self):
         mother = Person.objects.create(name="mom")
         father = Person.objects.create(name="dad")
         a = Person.objects.create(
@@ -80,14 +80,3 @@ class SiblingTestCase(TestCase):
 
         self.assertEqual(a.genetic_siblings.count(), 1)
         self.assertTrue(a.genetic_siblings.contains(sibling))
-
-    def test_extended_siblings(self):
-        mother = Person.objects.create(name="mom")
-        a = Person.objects.create(name="A", genetic_mother=mother)
-        genetic_sibling = Person.objects.create(name="B", genetic_mother=mother)
-        sibling = Person.objects.create(name="C")
-        a.siblings.add(sibling)
-
-        self.assertEqual(a.extended_siblings.count(), 2)
-        self.assertEqual(genetic_sibling.extended_siblings.count(), 1)
-        self.assertEqual(sibling.extended_siblings.count(), 1)

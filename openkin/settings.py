@@ -86,7 +86,7 @@ DATABASES = {
             "host": "localhost",
             "user": "postgres",
             "password": "postgres",
-            "dbname": "postgres",
+            "dbname": "openkin_db",
         },
     }
 }
