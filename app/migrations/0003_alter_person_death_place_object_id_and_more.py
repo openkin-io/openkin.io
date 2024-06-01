@@ -4,25 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0002_alter_person_birth_place_object_id'),
+        ("app", "0002_alter_person_birth_place_object_id"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='person',
-            name='death_place_object_id',
+            model_name="person",
+            name="death_place_object_id",
             field=models.PositiveIntegerField(null=True),
         ),
         migrations.AlterField(
-            model_name='person',
-            name='disappearance_place_object_id',
+            model_name="person",
+            name="disappearance_place_object_id",
             field=models.PositiveIntegerField(null=True),
         ),
         migrations.AlterField(
-            model_name='person',
-            name='resting_place_object_id',
+            model_name="person",
+            name="resting_place_object_id",
             field=models.PositiveIntegerField(null=True),
         ),
     ]

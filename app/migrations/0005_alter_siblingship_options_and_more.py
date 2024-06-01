@@ -4,37 +4,38 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0004_alter_person_siblings'),
+        ("app", "0004_alter_person_siblings"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='siblingship',
-            options={'ordering': ['from_person', 'to_person']},
+            name="siblingship",
+            options={"ordering": ["from_person", "to_person"]},
         ),
         migrations.RemoveConstraint(
-            model_name='siblingship',
-            name='unique_siblingship',
+            model_name="siblingship",
+            name="unique_siblingship",
         ),
         migrations.RenameField(
-            model_name='siblingship',
-            old_name='person',
-            new_name='from_person',
+            model_name="siblingship",
+            old_name="person",
+            new_name="from_person",
         ),
         migrations.RenameField(
-            model_name='siblingship',
-            old_name='sibling',
-            new_name='to_person',
+            model_name="siblingship",
+            old_name="sibling",
+            new_name="to_person",
         ),
         migrations.AlterField(
-            model_name='person',
-            name='siblings',
-            field=models.ManyToManyField(through='app.Siblingship', to='app.person'),
+            model_name="person",
+            name="siblings",
+            field=models.ManyToManyField(through="app.Siblingship", to="app.person"),
         ),
         migrations.AddConstraint(
-            model_name='siblingship',
-            constraint=models.UniqueConstraint(fields=('from_person', 'to_person'), name='unique_siblingship'),
+            model_name="siblingship",
+            constraint=models.UniqueConstraint(
+                fields=("from_person", "to_person"), name="unique_siblingship"
+            ),
         ),
     ]
