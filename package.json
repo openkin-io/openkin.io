@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@efficientcss/stylelint-config-ecss": "1.0.0-beta-10"
+  }
+}
