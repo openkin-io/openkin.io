@@ -102,18 +102,14 @@ class Settlement(Location):
 
     settlement_type = models.CharField(
         _("settlement type"),
-        help_text=_(
-            "City, town, village, hamlet, municipality, reservation, etc."
-        ),
+        help_text=_("City, town, village, hamlet, municipality, reservation, etc."),
         default="settlement",
         max_length=32,
         blank=True,
     )
 
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    region = models.ForeignKey(
-        Region, on_delete=models.CASCADE, null=True, blank=True
-    )
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, null=True, blank=True)
     subregion = models.ForeignKey(
         SubRegion, on_delete=models.CASCADE, null=True, blank=True
     )
@@ -138,9 +134,5 @@ class Place(Location):
 
     country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
     region = models.ForeignKey(Region, on_delete=models.CASCADE, null=True)
-    subregion = models.ForeignKey(
-        SubRegion, on_delete=models.CASCADE, null=True
-    )
-    settlement = models.ForeignKey(
-        Settlement, on_delete=models.CASCADE, null=True
-    )
+    subregion = models.ForeignKey(SubRegion, on_delete=models.CASCADE, null=True)
+    settlement = models.ForeignKey(Settlement, on_delete=models.CASCADE, null=True)

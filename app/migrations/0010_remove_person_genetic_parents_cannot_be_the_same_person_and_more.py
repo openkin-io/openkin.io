@@ -4,19 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0009_filiation_parent_and_child_cannot_be_the_same_person_and_more'),
-        ('contenttypes', '0002_remove_content_type_name'),
+        ("app", "0009_filiation_parent_and_child_cannot_be_the_same_person_and_more"),
+        ("contenttypes", "0002_remove_content_type_name"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='person',
-            name='genetic_parents_cannot_be_the_same_person',
+            model_name="person",
+            name="genetic_parents_cannot_be_the_same_person",
         ),
         migrations.AddConstraint(
-            model_name='person',
-            constraint=models.CheckConstraint(check=models.Q(('genetic_mother', models.F('genetic_father'))), name='genetic_parents_cannot_be_the_same_person'),
+            model_name="person",
+            constraint=models.CheckConstraint(
+                check=models.Q(("genetic_mother", models.F("genetic_father"))),
+                name="genetic_parents_cannot_be_the_same_person",
+            ),
         ),
     ]

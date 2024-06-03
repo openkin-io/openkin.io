@@ -5,29 +5,48 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0011_remove_person_genetic_parents_cannot_be_the_same_person_and_more'),
-        ('contenttypes', '0002_remove_content_type_name'),
+        (
+            "app",
+            "0011_remove_person_genetic_parents_cannot_be_the_same_person_and_more",
+        ),
+        ("contenttypes", "0002_remove_content_type_name"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='person',
-            name='genetic_parents_cannot_be_the_same_person',
+            model_name="person",
+            name="genetic_parents_cannot_be_the_same_person",
         ),
         migrations.AlterField(
-            model_name='person',
-            name='genetic_father',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='app.person'),
+            model_name="person",
+            name="genetic_father",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="app.person",
+            ),
         ),
         migrations.AlterField(
-            model_name='person',
-            name='genetic_mother',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='app.person'),
+            model_name="person",
+            name="genetic_mother",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="app.person",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='person',
-            constraint=models.CheckConstraint(check=models.Q(('genetic_mother__isnull', False), ('genetic_father__isnull', False), ('genetic_mother', models.F('genetic_father'))), name='genetic_parents_cannot_be_the_same_person'),
+            model_name="person",
+            constraint=models.CheckConstraint(
+                check=models.Q(
+                    ("genetic_mother__isnull", False),
+                    ("genetic_father__isnull", False),
+                    ("genetic_mother", models.F("genetic_father")),
+                ),
+                name="genetic_parents_cannot_be_the_same_person",
+            ),
         ),
     ]

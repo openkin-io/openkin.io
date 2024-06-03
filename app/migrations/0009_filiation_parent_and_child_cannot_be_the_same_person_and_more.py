@@ -4,19 +4,28 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0008_alter_siblingship_options_and_more'),
-        ('contenttypes', '0002_remove_content_type_name'),
+        ("app", "0008_alter_siblingship_options_and_more"),
+        ("contenttypes", "0002_remove_content_type_name"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='filiation',
-            constraint=models.CheckConstraint(check=models.Q(('parent', models.F('child')), _negated=True), name='parent_and_child_cannot_be_the_same_person'),
+            model_name="filiation",
+            constraint=models.CheckConstraint(
+                check=models.Q(("parent", models.F("child")), _negated=True),
+                name="parent_and_child_cannot_be_the_same_person",
+            ),
         ),
         migrations.AddConstraint(
-            model_name='person',
-            constraint=models.CheckConstraint(check=models.Q(('genetic_mother', models.F('genetic_father')), ('genetic_father', models.F('genetic_mother')), _connector='OR'), name='genetic_parents_cannot_be_the_same_person'),
+            model_name="person",
+            constraint=models.CheckConstraint(
+                check=models.Q(
+                    ("genetic_mother", models.F("genetic_father")),
+                    ("genetic_father", models.F("genetic_mother")),
+                    _connector="OR",
+                ),
+                name="genetic_parents_cannot_be_the_same_person",
+            ),
         ),
     ]
