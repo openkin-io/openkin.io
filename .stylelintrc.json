@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "@efficientcss/stylelint-config-ecss"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*"
+      ],
+      "rules": {
+        "plugin/selector-starts-with-filename": null
+      }
+    }
+  ]
+}
