@@ -5,39 +5,30 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="referrer" content="same-origin">
+        <!-- TODO: SEO
         <meta name="description" content="TODO">
         <meta name="keywords" content="TODO">
-        <meta name="referrer" content="same-origin">
-        <meta name="theme-color"
-              content="#282828"
-              media="(prefers-color-scheme: dark)">
-        <meta name="theme-color"
-              content="#ffffff"
-              media="(prefers-color-scheme: light)">
         <link rel="apple-touch-icon" sizes="180x180" href="TODO">
         <link rel="icon" type="image/png" sizes="32x32" href="TODO">
         <link rel="icon" type="image/png" sizes="16x16" href="TODO">
-        <script src="{% static 'js/inline-css.js' %}"></script>
+        -->
         <meta name="htmx-config" content='{"scrollIntoViewOnBoost": false}'>
         {% if debug %}
-            <script defer src="{% static 'js/htmx/htmx.js' %}"></script>
-            <script defer src="{% static 'js/alpine.js' %}"></script>
+            <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.js"
+                    integrity="sha384-qbtR4rS9RrUMECUWDWM2+YGgN3U4V4ZncZ0BvUcg9FGct0jqXz3PUdVpU1p0yrXS"
+                    crossorigin="anonymous"></script>
+            <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.js"></script>
         {% else %}
-            <script defer src="{% static 'js/htmx/htmx.min.js' %}"></script>
-            <script defer src="{% static 'js/alpine.min.js' %}"></script>
+            <script src="https://unpkg.com/htmx.org@1.9.12"
+                    integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+                    crossorigin="anonymous"></script>
+            <script defer
+                    src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js"></script>
         {% endif %}
-        <script defer src="{% static 'js/htmx/ext/preload.js' %}"></script>
-        <script>
-            function updateTheme() {
-                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark')
-                } else {
-                    document.documentElement.classList.remove('dark')
-                }
-            }
-            window.updateTheme = updateTheme;
-            updateTheme();
-        </script>
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/preload.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/gnat/css-scope-inline@main/script.js"></script>
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
         <title>
 
             {% block page_title %}
@@ -57,6 +48,7 @@
         {% endblock body %}
 
         {% if debug %}
+            <!-- https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#htmx -->
             <script>
                 if (typeof window.htmx !== "undefined") {
                     htmx.on("htmx:afterSettle", function(detail) {
