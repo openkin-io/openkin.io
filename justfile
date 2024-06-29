@@ -4,26 +4,22 @@ venv_bin := "./.venv/bin"
 python := venv_bin / "/python"
 pip := venv_bin / "/pip"
 
-venv:
-    @[ -d .venv ] || python -m venv .venv
+compose:
+    @if [[ -z "$(docker compose ps -q)" ]]; then docker compose up -d; fi
 
-install: venv
-    {{ pip }} install -r requirements.txt
+migrate: compose
+    docker compose exec django python manage.py makemigrations && docker compose exec django python manage.py migrate
 
-pg:
-    docker compose up -d
+test: compose
+    docker compose exec django python manage.py test
 
-migrate: pg venv
-    {{ python }} manage.py makemigrations && {{ python }} manage.py migrate
-
-test: pg
-    {{ python }} manage.py test
-
-serve: pg
-    { { python }} manage.py runserver
+serve: compose
 
 freeze:
-    {{ pip }} freeze --local > requirements.txt
+    {{ pip }} freeze --local | sort --ignore-case > requirements.txt
 
-format:
+venv:
+    @if [[! -d ".venv" ]]; then python -m venv .venv; fi
+
+format: venv
     {{ venv_bin }}/ruff --fix .
