@@ -1,8 +1,6 @@
 # OpenKin.io
 
-Install dependencies: `pip install -r requirements.txt`
-
-Spin up Postgres and start the dev server: `just`
+`docker compose up`
 
 Execute migrations: `just migrate`
 
