@@ -1,5 +1,7 @@
 {% extends "_base.html" %}
 
+{% load static %}
+
 {% block title %}
     Contact
 {% endblock %}
@@ -9,9 +11,36 @@
         {% include 'navbar.html' %}
     </header>
     <main>
-        <div class="box">
-            THIS IS OUR CONTACT PAGE
-        </div>
+        <section class="contact-hero" style="background: url('{% static "images/hero-image.jpg" %}') no-repeat center center/cover;">
+            <div class="contact-hero-content">
+                <h1>Contact Us</h1>
+            </div>
+        </section>
+        <section class="contact-content">
+            <div class="contact-info">
+                <h2>Contact Information</h2>
+                <p><strong>Email:</strong> support@openkin.com</p>
+            </div>
+            <div class="contact-form">
+                <h2>Send Us a Message</h2>
+                <form action="/send-message/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </section>
     </main>
     {% include 'footer.html' %}
 {% endblock body %}
