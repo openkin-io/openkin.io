@@ -13,25 +13,32 @@
         <link rel="apple-touch-icon" sizes="180x180" href="TODO">
         <link rel="icon" type="image/png" sizes="32x32" href="TODO">
         <link rel="icon" type="image/png" sizes="16x16" href="TODO">
-    <meta name="htmx-config" content='{"scrollIntoViewOnBoost": false}'>
-    {% if debug %}
-      <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.js"
-              integrity="sha384-qbtR4rS9RrUMECUWDWM2+YGgN3U4V4ZncZ0BvUcg9FGct0jqXz3PUdVpU1p0yrXS"
-              crossorigin="anonymous"></script>
-      <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.js"></script>
-    {% else %}
-      <script src="https://unpkg.com/htmx.org@1.9.12"
-              integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
-              crossorigin="anonymous"></script>
-      <script defer
-              src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js"></script>
-    {% endif %}
-    <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/preload.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gnat/css-scope-inline@main/script.js"></script>
-    {% vite_hmr_client %}
-    {% vite_react_refresh %}
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    <title>
+         -->
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <script src="{% static 'js/inline-css.js' %}"></script>
+        <meta name="htmx-config" content='{"scrollIntoViewOnBoost": false}'>
+        {% if debug %}
+            <script defer src="{% static 'js/htmx/htmx.js' %}"></script>
+            <script defer src="{% static 'js/alpine.js' %}"></script>
+        {% else %}
+            <script defer src="{% static 'js/htmx/htmx.min.js' %}"></script>
+            <script defer src="{% static 'js/alpine.min.js' %}"></script>
+        {% endif %}
+         {% vite_hmr_client %}
+         {% vite_react_refresh %}
+        <script defer src="{% static 'js/htmx/ext/preload.js' %}"></script>
+        <script>
+            function updateTheme() {
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark')
+                } else {
+                    document.documentElement.classList.remove('dark')
+                }
+            }
+            window.updateTheme = updateTheme;
+            updateTheme();
+        </script>
+        <title>
 
       {% block page_title %}
         {{ page_title }}
