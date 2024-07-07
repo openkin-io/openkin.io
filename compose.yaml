@@ -1,0 +1,45 @@
+name: openkin
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - openkin_data:/var/lib/postgresql/data
+  vite:
+    image: openkin:vite
+    build:
+      context: .
+      dockerfile: docker/vite.Dockerfile
+    command: pnpm run dev
+    ports:
+      - 5173:5173
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+  django:
+    image: openkin:django
+    build:
+      context: .
+      dockerfile: docker/django.Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: db
+    depends_on:
+      - db
+
+volumes:
+  openkin_data:
