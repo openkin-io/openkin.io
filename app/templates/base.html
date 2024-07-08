@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+{% block body %}
+
+  {% block header %}
+    <header>
+      {% include "navbar.html" %}
+    </header>
+  {% endblock header %}
+
+  <main>
+
+    {% block content %}
+    {% endblock content %}
+
+  </main>
+  {% include 'footer.html' %}
+{% endblock body %}
