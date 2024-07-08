@@ -1,9 +1,53 @@
-{% extends "_base.html" %}
+{% extends "base.html" %}
 
-{% load django_vite %}
+{% block title %}
+  Home
+{% endblock %}
 
-{% block body %}
-  <div id="tree">
-  </div>
-  {% vite_asset 'static/js/tree/index.js' %}
-{% endblock body %}
+{% block content %}
+  <section class="hero">
+    <div class="hero-content">
+      <h1>
+        Welcome to OpenKin
+      </h1>
+      <p>
+        Discover, Create, and Share Your Family's Story
+      </p>
+      <a href="{% url 'familytree' %}" class="cta-button">Get Started</a>
+    </div>
+  </section>
+  <section id="features" class="features">
+    <div class="feature">
+      <h2>
+        Create
+      </h2>
+      <p>
+        Build your family tree with ease.
+      </p>
+    </div>
+    <div class="feature">
+      <h2>
+        Design
+      </h2>
+      <p>
+        Customize the look and feel of your tree.
+      </p>
+    </div>
+    <div class="feature">
+      <h2>
+        Print
+      </h2>
+      <p>
+        Get beautiful, printable versions of your tree.
+      </p>
+    </div>
+    <div class="feature">
+      <h2>
+        Learn
+      </h2>
+      <p>
+        Explore resources and tips on genealogy.
+      </p>
+    </div>
+  </section>
+{% endblock content %}

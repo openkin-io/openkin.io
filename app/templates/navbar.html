@@ -1,0 +1,30 @@
+{% load static %}
+
+<nav class="navbar">
+  <ul class="navbar-list">
+    <li class="logo-container">
+      <a href="{% url 'home' %}" class="no-hover">
+        <img class="logo"
+             src="{% static 'images/openkin-logo.png' %}"
+             alt="OpenKin logo">
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'home' %}">Home</a>
+    </li>
+    <li>
+      <a href="{% url 'about' %}">About</a>
+    </li>
+    <li>
+      <a href="{% url 'contact' %}">Contact</a>
+    </li>
+    <li>
+      <a href="{% url 'familytree' %}">Your Family Tree</a>
+    </li>
+    <li class="spacer">
+    </li>
+    <li>
+      <a href="{% url 'login' %}">Login</a>
+    </li>
+  </ul>
+</nav>
