@@ -15,7 +15,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 80lvh;
     text-align: center;
 }
 
@@ -44,11 +44,34 @@ header {
     background-color: #5a6268;
 }
 
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 60px 20px;
+    background-color: #f1f1f1;
+}
+
+.feature {
+    text-align: center;
+    max-width: 200px;
+}
+
+.feature h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #522929;
+}
+
+.feature p {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
 .about-hero {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60vh;
+    height: 60lvh;
     color: white;
     text-align: center;
 }
@@ -64,12 +87,17 @@ header {
 }
 
 .about-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
     padding: 60px 20px;
     background-color: #f8f9fa;
 }
 
 .mission, .values {
     margin-bottom: 40px;
+    max-width: 500px;
+    text-align: justify;
 }
 
 .mission h2, .values h2 {
@@ -92,12 +120,11 @@ header {
     margin-bottom: 10px;
 }
 
-
 .contact-hero {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60vh;
+    height: 60lvh;
     color: white;
     text-align: center;
 }
@@ -153,6 +180,7 @@ header {
     border: 1px solid #ced4da;
     border-radius: 5px;
     font-size: 1rem;
+    resize: none;
 }
 
 .family-tree-section {
@@ -165,7 +193,7 @@ header {
 
 .family-tree-box {
     width: 80%;
-    height: 60vh;
+    height: 60lvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -181,8 +209,8 @@ header {
 }
 
 .panel {
-    width: 80%;
-    padding: 20px;
+    width: 70%;
+    padding: 60px;
     background-color: #ffffff;
     border: 1px solid #ced4da;
     border-radius: 10px;
@@ -195,27 +223,39 @@ header {
     color: #495057;
 }
 
-.features {
-    display: flex;
-    justify-content: space-around;
-    padding: 60px 20px;
-    background-color: #f1f1f1;
+.box {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 800px;
 }
 
-.feature {
-    text-align: center;
-    max-width: 200px;
+.faq-section {
+    margin-bottom: 40px;
 }
 
-.feature h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
-    color: #522929;
+.faq-item {
+    margin-bottom: 20px;
 }
 
-.feature p {
+.faq-item h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.faq-item p {
     font-size: 1rem;
-    color: #6c757d;
+    color: #666;
+}
+
+.privacy-section {
+    margin-bottom: 40px;
+}
+
+.terms-section {
+    margin-bottom: 40px;
 }
 
 .navbar {
@@ -265,6 +305,12 @@ header {
     background-color: rgba(255, 255, 255, 0.3);
 }
 
+.navbar-list a.no-hover:hover {
+    color: white;
+    background-color: transparent;
+}
+
+
 .spacer {
     flex-grow: 1;
 }
@@ -272,7 +318,6 @@ header {
 .footer {
     background-color: #d3c5c1;
     padding: 20px;
-    border-radius: 10px;
     text-align: center;
 }
 
@@ -292,72 +337,4 @@ header {
 
 .footer-list a:hover {
     color: gray;
-}
-
-.box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    margin: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.list {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 50px;
-    background-color: #f1f1f1;
-    border-radius: 10px;
-    margin: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.footer {
-    background-color: #d3c5c1;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.footer-list a {
-    color: #0e426a;
-    text-decoration: none;
-}
-
-.footer-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-list li {
-    margin-right: 20px;
-}
-
-.box {
-    display: flex;
-    justify-content: center;
-    padding: 100px
-}
-
-.list {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    padding: 100px;
-}
-
-.panel {
-    border-style: ridge;
-    padding: 50px;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
 }
