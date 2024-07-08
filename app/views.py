@@ -15,6 +15,6 @@ def faq(request):
 def learn(request):
     return render(request, "pages/learn.html", {"page_title": _("Learn")})
 def privacy(request):
-    return render(request, "pages/privacy.html", {"page_title": _("Privacy")})
+    return render(request, "pages/privacy.html", {"page_title": _("Privacy Policy")})
 def terms(request):
-    return render(request, "pages/terms.html", {"page_title": _("Terms")})
+    return render(request, "pages/terms.html", {"page_title": _("Terms & Conditions")})
