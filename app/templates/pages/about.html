@@ -1,7 +1,5 @@
 {% extends "_base.html" %}
 
-{% load static %}
-
 {% block title %}
     About
 {% endblock %}
@@ -11,8 +9,8 @@
         {% include 'navbar.html' %}
     </header>
     <main>
-            <section class="about-hero" style="background: url('{% static "images/hero-image.jpg" %}') no-repeat center center/cover;">
-                <div class="about-hero-content">
+        <section class="about-hero">
+            <div class="about-hero-content">
                 <h1>About OpenKin</h1>
                 <p>Connecting Families Across Generations</p>
             </div>

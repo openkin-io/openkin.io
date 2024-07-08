@@ -1,7 +1,5 @@
 {% extends "_base.html" %}
 
-{% load static %}
-
 {% block title %}
     Home
 {% endblock %}
@@ -11,7 +9,7 @@
         {% include 'navbar.html' %}
     </header>
     <main>
-        <section class="hero" style="background: url('{% static "images/hero-image.jpg" %}') no-repeat center center/cover;">
+        <section class="hero">
             <div class="hero-content">
                 <h1>Welcome to OpenKin</h1>
                 <p>Discover, Create, and Share Your Family's Story</p>
