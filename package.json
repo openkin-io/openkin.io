@@ -4,6 +4,7 @@
 		"build": "vite build"
 	},
 	"dependencies": {
+		"@pixi/ui": "^2.1.5",
 		"pixi.js": "^8.3.4"
 	},
 	"devDependencies": {

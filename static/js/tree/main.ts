@@ -7,7 +7,11 @@ const app = new PIXI.Application();
 const container = document.getElementById("app-container");
 
 if (container) {
-	await app.init({ background: 0xb7b7b7, resizeTo: container });
+	await app.init({
+		background: 0xb7b7b7,
+		antialias: false,
+		resizeTo: container,
+	});
 
 	container.appendChild(app.canvas);
 
