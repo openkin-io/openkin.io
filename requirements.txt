@@ -6,6 +6,5 @@ django-types==0.19.1
 django-vite==3.0.4
 pre-commit
 psycopg==3.1.18
-ruff==0.4.7
 types-psycopg2==2.9.21.20240417
 typing_extensions==4.10.0

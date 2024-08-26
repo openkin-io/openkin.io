@@ -1,18 +1,23 @@
 {% load static %}
 
-<footer class="footer">
-    <ul class="footer-list">
-        <li>
-            <a href="{% url 'faq' %}">Help</a>
-        </li>
-        <li>
-            <a href="{% url 'learn' %}">Learn</a>
-        </li>
-        <li>
-            <a href="{% url 'privacy' %}">Privacy</a>
-        </li>
-        <li>
-            <a href="{% url 'terms' %}">Terms</a>
-        </li>
-    </ul>
+<footer>
+  <ul>
+    <style>
+      me {
+        justify-content: center;
+      }
+    </style>
+    <li>
+      <a href="{% url 'faq' %}">Help</a>
+    </li>
+    <li>
+      <a href="{% url 'learn' %}">Learn</a>
+    </li>
+    <li>
+      <a href="{% url 'privacy' %}">Privacy</a>
+    </li>
+    <li>
+      <a href="{% url 'terms' %}">Terms</a>
+    </li>
+  </ul>
 </footer>

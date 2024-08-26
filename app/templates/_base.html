@@ -14,8 +14,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="TODO">
         <link rel="icon" type="image/png" sizes="16x16" href="TODO">
          -->
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <script src="{% static 'js/inline-css.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <meta name="htmx-config" content='{"scrollIntoViewOnBoost": false}'>
     {% if debug %}
       <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.js"
@@ -30,7 +29,6 @@
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/preload.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/gnat/css-scope-inline@main/script.js"></script>
     {% vite_hmr_client %}
-    {% vite_react_refresh %}
     <title>
 
       {% block page_title %}
@@ -52,16 +50,16 @@
     {% if debug %}
       <!-- https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#htmx -->
       <script>
-          if (typeof window.htmx !== "undefined") {
-              htmx.on("htmx:afterSettle", function(detail) {
-                  if (
-                      typeof window.djdt !== "undefined" &&
-                      detail.target instanceof HTMLBodyElement
-                  ) {
-                      djdt.show_toolbar();
-                  }
-              });
-          }
+        if (typeof window.htmx !== "undefined") {
+          htmx.on("htmx:afterSettle", function(detail) {
+            if (
+              typeof window.djdt !== "undefined" &&
+              detail.target instanceof HTMLBodyElement
+            ) {
+              djdt.show_toolbar();
+            }
+          });
+        }
       </script>
     {% endif %}
   </body>
