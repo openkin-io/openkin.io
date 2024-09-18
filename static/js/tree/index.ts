@@ -1,2 +1,2 @@
 import "vite/modulepreload-polyfill";
-import "./main.tsx";
+import "./main";

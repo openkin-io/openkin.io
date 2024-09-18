@@ -2,12 +2,12 @@
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"module": "ESNext",
+		"target": "ES2022",
 		"isolatedModules": true,
 		"skipLibCheck": true,
 		"useDefineForClassFields": true,
 		"noEmit": true,
 		"moduleResolution": "bundler",
-		"jsx": "react-jsx",
 		"strict": true,
 		"types": ["vite/client"]
 	},
