@@ -1,53 +1,44 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
+
+{% load static %}
 
 {% block title %}
-  Home
+    Home
 {% endblock %}
 
-{% block content %}
-  <section class="hero">
-    <div class="hero-content">
-      <h1>
-        Welcome to OpenKin
-      </h1>
-      <p>
-        Discover, Create, and Share Your Family's Story
-      </p>
-      <a href="{% url 'familytree' %}" class="cta-button">Get Started</a>
-    </div>
-  </section>
-  <section id="features" class="features">
-    <div class="feature">
-      <h2>
-        Create
-      </h2>
-      <p>
-        Build your family tree with ease.
-      </p>
-    </div>
-    <div class="feature">
-      <h2>
-        Design
-      </h2>
-      <p>
-        Customize the look and feel of your tree.
-      </p>
-    </div>
-    <div class="feature">
-      <h2>
-        Print
-      </h2>
-      <p>
-        Get beautiful, printable versions of your tree.
-      </p>
-    </div>
-    <div class="feature">
-      <h2>
-        Learn
-      </h2>
-      <p>
-        Explore resources and tips on genealogy.
-      </p>
-    </div>
-  </section>
-{% endblock content %}
+{% block body %}
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+    <main>
+        <!-- Hero Section with Overlay -->
+        <section class="hero" style="position: relative; background: url('{% static "images/hero-image.jpg" %}') no-repeat center center/cover; height: 400px;">
+            <div style="background: rgba(0, 0, 0, 0.5); position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div>
+            <div class="hero-content" style="position: relative; z-index: 2; color: white; text-align: center; padding-top: 100px;">
+                <h1 style="font-size: 3em; font-family: 'Arial', sans-serif; font-weight: bold;">Welcome to OpenKin</h1>
+                <p style="font-size: 1.5em; margin-top: 20px;">Discover, Create, and Share Your Family's Story</p>
+                <a href="familytree" class="cta-button" style="display: inline-block; background-color: #525252; color: white; padding: 10px 20px; font-size: 1.2em; border-radius: 5px; margin-top: 30px; text-decoration: none;">Get Started</a>
+            </div>
+        </section>
+        <section id="features" class="features" style="padding: 50px 0; background-color: #f4f4f4; text-align: center;">
+            <div class="feature" style="margin-bottom: 30px;">
+                <h2 style="font-size: 2em; color: #333;">Create</h2>
+                <p style="font-size: 1.2em; color: #777;">Build your family tree with ease.</p>
+            </div>
+            <div class="feature" style="margin-bottom: 30px;">
+                <h2 style="font-size: 2em; color: #333;">Design</h2>
+                <p style="font-size: 1.2em; color: #777;">Customize the look and feel of your tree.</p>
+            </div>
+            <div class="feature" style="margin-bottom: 30px;">
+                <h2 style="font-size: 2em; color: #333;">Print</h2>
+                <p style="font-size: 1.2em; color: #777;">Get beautiful, printable versions of your tree.</p>
+            </div>
+            <div class="feature">
+                <h2 style="font-size: 2em; color: #333;">Learn</h2>
+                <p style="font-size: 1.2em; color: #777;">Explore resources and tips on genealogy.</p>
+            </div>
+        </section>
+    </main>
+    
+    {% include 'footer.html' %}
+{% endblock body %}

@@ -1,47 +1,57 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
   About
 {% endblock %}
 
-{% block content %}
-  <section class="about-hero">
-    <div class="about-hero-content">
-      <h1>
-        About OpenKin
-      </h1>
-      <p>
-        Connecting Families Across Generations
-      </p>
-    </div>
+{% block body %}
+    <header>
+        {% include 'navbar.html' %}
+    </header>
+    <main>
+  <section class="hero" style="position: relative; background: url('{% static "images/hero-image.jpg" %}') no-repeat center center/cover; height: 350px;">
+      <div style="background: rgba(0, 0, 0, 0.5); position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></div>
+      <div class="about-hero-content" style="position: relative; z-index: 2; color: white; text-align: center; padding-top: 100px;">
+          <h1 style="font-size: 2.5em; font-family: 'Arial', sans-serif; font-weight: bold;">About OpenKin</h1>
+          <p style="font-size: 1.3em; margin-top: 20px;">Connecting Families Across Generations</p>
+      </div>
   </section>
-  <section class="about-content">
-    <div class="mission">
-      <h2>
-        Our Mission
-      </h2>
-      <p>
-        At OpenKin, our mission is to help you discover, create, and share your family's unique story. We believe in the power of connections and the importance of preserving family heritage for future generations.
-      </p>
-    </div>
-    <div class="values">
-      <h2>
-        Our Values
-      </h2>
-      <ul>
-        <li>
-          <strong>Integrity:</strong> We are committed to honesty and transparency in all our endeavors.
-        </li>
-        <li>
-          <strong>Innovation:</strong> We continuously strive to improve and innovate our services.
-        </li>
-        <li>
-          <strong>Community:</strong> We value the sense of belonging and community among our users.
-        </li>
-        <li>
-          <strong>Excellence:</strong> We aim to provide the highest quality tools and resources for family tree building.
-        </li>
-      </ul>
-    </div>
+
+  <!-- Mission Section with Padding and Clean Layout -->
+  <section class="about-content" style="padding: 50px 0; background-color: #f4f4f4; text-align: center;">
+      <div class="mission" style="margin-bottom: 50px;">
+          <h2 style="font-size: 2em; color: #333;">Our Mission</h2>
+          <p style="font-size: 1.2em; color: #777; max-width: 800px; margin: 0 auto;">
+              At OpenKin, our mission is to help you discover, create, and share your family's unique story. We believe in the power of connections and the importance of preserving family heritage for future generations.
+          </p>
+      </div>
+
+      <!-- Values Section -->
+      <div class="values" style="padding: 0 20px;">
+          <h2 style="font-size: 2em; color: #333; margin-bottom: 30px;">Our Values</h2>
+          <ul style="list-style: none; padding: 0; max-width: 800px; margin: 0 auto;">
+              <li style="margin-bottom: 20px;">
+                  <strong style="font-size: 1.2em; color: #444;">Integrity:</strong> 
+                  <span style="color: #666;">We are committed to honesty and transparency in all our endeavors.</span>
+              </li>
+              <li style="margin-bottom: 20px;">
+                  <strong style="font-size: 1.2em; color: #444;">Innovation:</strong> 
+                  <span style="color: #666;">We continuously strive to improve and innovate our services.</span>
+              </li>
+              <li style="margin-bottom: 20px;">
+                  <strong style="font-size: 1.2em; color: #444;">Community:</strong> 
+                  <span style="color: #666;">We value the sense of belonging and community among our users.</span>
+              </li>
+              <li>
+                  <strong style="font-size: 1.2em; color: #444;">Excellence:</strong> 
+                  <span style="color: #666;">We aim to provide the highest quality tools and resources for family tree building.</span>
+              </li>
+          </ul>
+      </div>
   </section>
-{% endblock content %}
+  </main>
+    {% include 'footer.html' %}
+
+{% endblock body %}
