@@ -1,15 +1,11 @@
-FROM node:20 AS base
+FROM node:20-slim
 ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_PATH:$PATH"
+ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 COPY . /app
 WORKDIR /app
 
-FROM base AS deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
-
-FROM base
-COPY --from=deps /app/node_modules /app/node_modules
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
 EXPOSE 5173
 
