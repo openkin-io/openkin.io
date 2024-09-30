@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
-
+from django.http import JsonResponse
+from .models import Person, Filiation
 
 def index(request):
     return render(request, "pages/index.html", {"page_title": _("Home")})
@@ -32,3 +33,14 @@ def privacy(request):
 
 def terms(request):
     return render(request, "pages/terms.html", {"page_title": _("Terms & Conditions")})
+
+
+def family_tree_api(request):
+    if request.method == "GET":
+        persons = list(Person.objects.values('id', 'given_name', 'surname', 'birth_date'))
+        filiation = list(Filiation.objects.values('child', 'child_id', 'parent'))
+
+        return JsonResponse({
+            'persons': persons,
+            'filiation': filiation
+        })
