@@ -12,27 +12,100 @@
 {% endblock title %}
 
 {% block content %}
+  <div id="input-form">
+    <input type="text" id="given_name" placeholder="Enter first name" />
+    <input type="text" id="surname" placeholder="Enter surname" />
+    <input type="date" id="birth_date" placeholder="Enter birth date" />
+    <button id="add-person-button">Add Person</button>
+  </div>
+
+  <div id="added-people" style="margin-top: 20px;">
+    <h3>Added People to Family Tree:</h3>
+    <ul id="people-list"></ul>
+  </div>
+
   <div id="app-container">
     <style>
       me {
         height: 100%;
         position: relative;
-
-        .lil-gui {
-          position: absolute;
-          bottom: 0;
-        }
+      }
+      #input-form {
+        margin-bottom: 20px;
+      }
+      #people-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      #people-list li {
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 5px 0;
       }
     </style>
   </div>
 
-  <div id="family-tree" hx-get="/api/familytree/" hx-trigger="load" hx-swap="outerHTML"></div>
+  <script>
+    document.getElementById('add-person-button').addEventListener('click', function() {
+        const given_name = document.getElementById('given_name').value;
+        const surname = document.getElementById('surname').value;
+        const birth_date_input = document.getElementById('birth_date').value;
+        const birth_date = new Date(birth_date_input).toISOString().split('T')[0];
 
-<script>
-    document.addEventListener('htmx:afterRequest', function(evt) {
-        const familyTree = evt.detail.xhr.response;
-        console.log(familyTree);
+        const personData = {
+            given_name: given_name,
+            surname: surname,
+            birth_date: birth_date
+        };
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // CSRF token stuff (so that the browser doesn't block you - Firefox was blocking me)
+        const csrftoken = getCookie('csrftoken');
+
+        fetch('/api/familytree/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify(personData),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('given_name').value = '';
+            document.getElementById('surname').value = '';
+            document.getElementById('birth_date').value = '';
+
+            const peopleList = document.getElementById('people-list');
+            const listItem = document.createElement('li');
+            listItem.textContent = `${data.given_name} ${data.surname} (Born: ${data.birth_date})`;
+            peopleList.appendChild(listItem);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
-</script>
+  </script>
 
 {% endblock content %}

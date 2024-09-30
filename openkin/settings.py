@@ -34,6 +34,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware"
 ]
 
 ROOT_URLCONF = "openkin.urls"
