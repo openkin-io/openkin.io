@@ -11,5 +11,5 @@ urlpatterns = [
     path("learn/", views.learn, name="learn"),
     path("privacy/", views.privacy, name="privacy"),
     path("terms/", views.terms, name="terms"),
-    path('api/familytree/', views.family_tree_api, name='family_tree_api'),
+    path("api/familytree/", views.family_tree_api, name="family_tree_api"),
 ]
